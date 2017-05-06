@@ -3,7 +3,7 @@
 //Contract -> Objects in Category Theory
 const str = s => {
 	if(typeof s  !== 'string'){
-		throw new Error('Expected a string!');
+		throw new TypeError('Expected a string!');
 	}else{
 		return s;
 	}
@@ -16,8 +16,8 @@ const repeat = s => {
 };
 
 //example:
-// console.log(repeat(2)); //-> Error: Expected string!
-// console.log(repeat("2")); //-> 22
+// console.log(repeat(2)); //-> TypeError: Expected string!
+// console.log(repeat('2')); //-> 22
 
 
 const any = x => x;
@@ -27,7 +27,7 @@ const typeOf = type => {
 	type = str(type);
 	return (s) => {
 		if(typeof s  !== type){
-			throw new Error(`Expected a ${type}!`);
+			throw new TypeError(`Expected a ${type}!`);
 		}else{
 			return s;
 		}
@@ -38,11 +38,26 @@ const typeOf = type => {
 const bool = typeOf('boolean');
 const obj = typeOf('object');
 const num = typeOf('number');
-const undef = typeOf("undefined");
-const fun = typeOf("function");
+const undef = typeOf('undefined');
+const fun = typeOf('function');
 
 //Number -> Number  :: Guarded function
 const inc = x => {
 	x = num(x);
 	return num(x + 1);
 };
+
+//Contract [array]
+const arr = a => {
+	if({}.toString.call(a) !== '[object Array]'){
+		throw new TypeError('Expected a array!');
+	}else{
+		return a;
+	}
+};
+
+//example:
+//console.log(arr([1, 2, 3])); //-> [1, 2, 3]
+//console.log(arr("[1, 2, 3]")); //-> TypeError: Expected a array!
+
+const arrOf = c => a => arr(a).map(c);
