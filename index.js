@@ -61,3 +61,38 @@ const arr = a => {
 //console.log(arr("[1, 2, 3]")); //-> TypeError: Expected a array!
 
 const arrOf = c => a => arr(a).map(c);
+
+const Maybe = function(){};
+const None = function(){};
+None.prototype = Object.create(Maybe.prototype);
+None.prototype.toString = () => 'None';
+const none = new None();
+
+const Some = function(x) {
+	this.x = x;
+};
+
+Some.prototype = Object.create(Maybe.prototype);
+Some.prototype.toString = function(){ return `Some(${this.x})`; };
+const some = x => new Some(x);
+
+const maybe  = c => m => {
+	if(m instanceof None){
+		return m;
+	}else if(m instanceof Some){
+		return some(c(m.x));
+	}else{
+		throw new TypeError('Expected None or Some(value)!');
+	}
+};
+
+Maybe.prototype.getOrElse = function(x){
+	if(this instanceof Some){
+		return this.x;
+	}else{
+		return x;
+	}
+};
+
+console.log(maybe(repeat)(none).getOrElse('victor')); // -> victor
+console.log(maybe(repeat)(some('igor'))); // -> Maybe { x: 'igorigor' }
