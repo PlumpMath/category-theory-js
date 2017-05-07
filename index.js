@@ -71,7 +71,6 @@ const none = new None();
 const Some = function(x) {
 	this.x = x;
 };
-
 Some.prototype = Object.create(Maybe.prototype);
 Some.prototype.toString = function(){ return `Some(${this.x})`; };
 const some = x => new Some(x);
@@ -96,3 +95,4 @@ Maybe.prototype.getOrElse = function(x){
 
 console.log(maybe(repeat)(none).getOrElse('victor')); // -> victor
 console.log(maybe(repeat)(some('igor'))); // -> Maybe { x: 'igorigor' }
+console.log('' + maybe(repeat)(some('igor'))); // -> Some(igorigor)
